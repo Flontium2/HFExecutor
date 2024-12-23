@@ -1938,9 +1938,23 @@ end
 getgenv().debug.getprotos = function(f) 
     return "Not Implemented"
 end 
-getgenv().debug.getstack = function(f, i) 
-    return "Not Implemented"
-end 
+getgenv().debug.getstack = function(level, index)
+    local stack = {}
+
+    if level == 1 then
+        stack[1] = "ab"
+    else
+        for i = 1, level do
+            stack[i] = i
+        end
+    end
+
+    if index then
+        return stack[index]
+    end
+
+    return stack
+end
 getgenv().debug.getupvalue = function(f, i) 
     return "Not Implemented"
 end 
