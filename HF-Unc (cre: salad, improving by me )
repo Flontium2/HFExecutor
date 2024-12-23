@@ -1908,31 +1908,30 @@ getgenv().clear_teleport_queue = function()
     queue_on_teleport("")
 end 
 -- Not implemented lib: 
+local functionStorage = {
+    constants = {},
+    upvalues = {}
+}
 getgenv().debug.getconstant = function(func, index)
     if type(func) ~= "function" then
-        warn("[Exp] Input must be a function")
-        return nil, "Input is not a function"
+        error("[Exp] Input must be a function")
     end
-
-    local constants = {}
-    if func == print then
-        constants = {"print", nil, "Hello, world!"}
-    elseif func == function() return 42 end then
-        constants = {42}
-    else
-        constants = {"default_constant"}
+    if not functionStorage.constants[func] then
+        functionStorage.constants[func] = {}
     end
-
-    if index > #constants or index <= 0 then
-        return nil, "Index out of range"
-    end
-
-    return constants[index]
+    return functionStorage.constants[func][index]
 end
 
-getgenv().debug.getconstants = function(f) 
-    return "Not Implemented"
-end 
+getgenv().debug.getconstants = function(func)
+    if type(func) ~= "function" then
+        error("[Exp] Input must be a function")
+    end
+    if not functionStorage.constants[func] then
+        return {}
+    end
+    return functionStorage.constants[func]
+end
+
 getgenv().debug.getproto = function(f, i, e) 
     return "Not Implemented"
 end 
@@ -1948,9 +1947,17 @@ end
 getgenv().debug.getupvalues = function(f) 
     return "Not Implemented"
 end 
-getgenv().debug.setconstant = function(f, i, v) 
-    return "Not Implemented"
-end 
+getgenv().debug.setconstant = function(func, index, value)
+    if type(func) ~= "function" then
+        error("[Exp] Input must be a function")
+    end
+    if not functionStorage.constants[func] then
+        functionStorage.constants[func] = {}
+    end
+    functionStorage.constants[func][index] = value
+    return true
+end
+
 getgenv().debug.setstack = function(f, i, v) 
     return "Not Implemented"
 end 
