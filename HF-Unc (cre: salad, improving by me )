@@ -1575,7 +1575,7 @@ WebSocket.connect = function(url)
     end }
     return ws
 end
-getgenv().identityexecutor = function()
+getgenv().identifyexecutor = function()
 	return "HF Executor V1.0.0"
 end
 -- Salad Custom Functions
