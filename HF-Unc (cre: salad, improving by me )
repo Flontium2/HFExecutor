@@ -1576,7 +1576,7 @@ WebSocket.connect = function(url)
     return ws
 end
 getgenv().identityexecutor = function()
-	return HF Executor V1.0.0"
+	return "HF Executor V1.0.0"
 end
 -- Salad Custom Functions
 getgenv().salad.get_player_by_name = function(name)
