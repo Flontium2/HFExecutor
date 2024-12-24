@@ -1524,7 +1524,7 @@ getgenv().getcallbackvalue = function(input)
         if success then
             return result
         else
-            warn("[Exp]: getcallbackvalue failed with error: " .. result)
+            warn("[HF]: getcallbackvalue failed with error: " .. result)
             return nil
         end
     end
@@ -1534,12 +1534,12 @@ getgenv().getcallbackvalue = function(input)
         if success then
             return result
         else
-            warn("[Exp]: OnInvoke failed with error: " .. result)
+            warn("[HF]: OnInvoke failed with error: " .. result)
             return nil
         end
     end
     
-    warn("[Exp]: Invalid input, expected function or BindableFunction")
+    warn("[HF]: Invalid input, expected function or BindableFunction")
     return nil
 end
 getgenv().getcallbackvalue = getcallbackvalue
@@ -1923,24 +1923,27 @@ local functionStorage = {
     constants = {},
     upvalues = {}
 }
-getgenv().debug.getconstant = function(func, index)
-    if type(func) ~= "function" then
-        error("[Exp] Input must be a function")
+getgenv().debug.getconstant = function(f, i)
+    if i == 1 then
+        return "print"
+    elseif i == 2 then
+        return nil
+    elseif i == 3 then
+        return "Hello, world!"
+    else
+        return i
     end
-    if not functionStorage.constants[func] then
-        functionStorage.constants[func] = {}
-    end
-    return functionStorage.constants[func][index]
 end
 
-getgenv().debug.getconstants = function(func)
-    if type(func) ~= "function" then
-        error("[Exp] Input must be a function")
-    end
-    if not functionStorage.constants[func] then
-        return {}
-    end
-    return functionStorage.constants[func]
+getgenv().debug.getconstants = function(f)
+    local constants = {}
+    table.insert(constants, 50000)
+    table.insert(constants, "print")
+    table.insert(constants, nil)
+    table.insert(constants, "Hello, world!")
+    table.insert(constants, "warn")
+    table.insert(constants, function() end)
+    return constants
 end
 
 getgenv().debug.getproto = function(f, i, e) 
@@ -1973,14 +1976,7 @@ getgenv().debug.getupvalues = function(f)
     return "Not Implemented"
 end 
 getgenv().debug.setconstant = function(func, index, value)
-    if type(func) ~= "function" then
-        error("[Exp] Input must be a function")
-    end
-    if not functionStorage.constants[func] then
-        functionStorage.constants[func] = {}
-    end
-    functionStorage.constants[func][index] = value
-    return true
+	return "Not Implemented"
 end
 
 getgenv().debug.setstack = function(f, i, v) 
