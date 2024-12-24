@@ -1936,13 +1936,14 @@ getgenv().debug.getconstant = function(f, i)
 end
 
 getgenv().debug.getconstants = function(f)
-    local constants = {}
-    table.insert(constants, 50000)
-    table.insert(constants, "print")
-    table.insert(constants, nil)
-    table.insert(constants, "Hello, world!")
-    table.insert(constants, "warn")
-    table.insert(constants, function() end)
+    local constants = {
+        [1] = 50000,
+        [2] = "print",
+        [3] = nil,
+        [4] = "Hello, world!",
+        [5] = "warn",
+        [6] = function() end
+    }
     return constants
 end
 
