@@ -1822,18 +1822,18 @@ getgenv().getfflag = function(fn)
     end
 end
 
-getgenv().hookfunction = newcclosure(function(originalFunction, callback)
-    assert(type(originalFunction) == "function", "Expected a function as the first argument")
-    assert(type(callback) == "function", "Expected a function as the second argument")
+local function_table = {}
 
-    local hookedFunction = hookfunction(originalFunction, callback)
+local function hookfunction(originalFunction, newFunction)
+  local function hookedFunction(...)
+    local result = originalFunction(...)
+    newFunction(...)
+    return result
+  end
+  function_table[originalFunction] = hookedFunction
+  return hookedFunction
+end
 
-    if not hookedFunction then
-        error("Failed to hook the function")
-    end
-
-    return hookedFunction
-end)
 getgenv().hookmetamethod = newcclosure(function(object, method, callback)
     assert(type(object) == "table" or type(object) == "userdata", "Expected a table or userdata as the first argument")
     assert(type(method) == "string", "Expected a string as the second argument")
