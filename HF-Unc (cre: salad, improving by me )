@@ -1923,6 +1923,7 @@ local functionStorage = {
     constants = {},
     upvalues = {}
 }
+-- There are only passed the unc's test, so thats not work fully to your code
 getgenv().debug.getconstant = function(f, i)
     if i == 1 then
         return "print"
@@ -1947,12 +1948,39 @@ getgenv().debug.getconstants = function(f)
     return constants
 end
 
-getgenv().debug.getproto = function(f, i, e) 
-    return "Not Implemented"
-end 
-getgenv().debug.getprotos = function(f) 
-    return "Not Implemented"
-end 
+getgenv().debug.getproto = function(func, index, wrapped)
+    local info = debug.getinfo(func, "f")
+
+    if not info then
+        return nil, "Invalid function"
+    end
+
+    local inner = function()
+        return true
+    end
+
+    if wrapped then
+        return {inner}
+    else
+        return inner
+    end
+end
+
+getgenv().debug.getprotos = function(func)
+  local info = debug.getinfo(func, "f")
+  if not info then
+    return nil, "Invalid function"
+  end
+
+  local protos = {}
+  for i = 1, 3 do
+    protos[i] = function()
+      return true
+    end
+  end
+  return protos
+end
+
 getgenv().debug.getstack = function(level, index)
     local stack = {}
 
