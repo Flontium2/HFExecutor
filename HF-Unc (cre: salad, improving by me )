@@ -531,7 +531,9 @@ getgenv().HttpGet = function(url, rr)
 	end
 	return game:GetService("HttpService"):JSONDecode(result.Body)
 end	
-
+getgenv().getexecutorname = function()
+	return "HF"
+end
 getgenv().require = function(scr) -- not mine
 	assert(type(scr) == "number" or (typeof(scr) == "Instance" and scr.ClassName == "ModuleScript"), "Expected")
 	if (type(scr) == "number") then 
