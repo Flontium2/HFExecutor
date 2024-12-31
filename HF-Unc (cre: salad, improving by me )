@@ -555,7 +555,28 @@ getgenv().require = function(scr) -- not mine
 		return
 	end
 end
+local loadedModules = {}
 
+getgenv().require = function(module)
+    if loadedModules[module] then
+        return loadedModules[module]
+    end
+
+    local environment = {}
+    setmetatable(environment, { __index = getfenv() })
+
+    local functionModule = loadstring(module.Source, module.Name)
+    setfenv(functionModule, environment)
+    local result = functionModule()
+
+    loadedModules[module] = result or environment
+    return loadedModules[module]
+end
+local hwid = game:GetService("HttpService"):GenerateGUID(false)
+getgenv().gethwid = function()
+	return hwid
+end
+getgenv().gethwid = getgenv().get_hwid
 getgenv().getrenv = function()
     return renv 
 end 
