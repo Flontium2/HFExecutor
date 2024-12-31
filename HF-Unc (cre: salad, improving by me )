@@ -668,23 +668,33 @@ getgenv().customprint = function(text: string, properties: table, imgid: rbxasse
         end
     end
 end
+local nilinstances, cache = {Instance.new("Part")}, {cached = {}}
+
+getgenv().getnilinstances = function() -- thats not mine, cre: .rizve
+	return nilinstances
+end
+
+getgenv().getgc = function() -- cre: .rizve
+	return table.clone(nilinstances)
+end
 
 getgenv().join = function(placeID: number, jobID: string)
     game:GetService("TeleportService"):TeleportToPlaceInstance(placeID, jobID, getplayer())
 end
 
 getgenv().getconnections = function(obj)
-    if not obj then
-        return {}
-    end
-
-    local connections = {}
-    if obj.Connected or obj.Enabled then
-        for _, conn in ipairs(obj:GetConnections()) do
-            table.insert(connections, conn)
-        end
-    end
-    return connections
+	return {{
+		Enabled = true, 
+		ForeignState = false, 
+		LuaConnection = true, 
+		Function = function() end,
+		Thread = task.spawn(function() end),
+		Fire = function() end, 
+		Defer = function() end, 
+		Disconnect = function() end,
+		Disable = function() end, 
+		Enable = function() end,
+	}}
 end
 
 getgenv().firesignal = function(instance: Instance, signaln: string, args: any)
