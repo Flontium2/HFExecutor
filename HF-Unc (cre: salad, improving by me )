@@ -20,7 +20,6 @@ local HttpService, UserInputService, InsertService, CoreGui, RunService = game:F
 local VirtualInputManager = Instance.new("VirtualInputManager")
 shared.httpspy = false
 shared.antilogger = false 
-local hwid = HttpService:GenerateGUID(false)
 local oggm, ogsm = getmetatable, setmetatable
 -- tables 
 local blockedurls = {
