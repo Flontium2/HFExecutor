@@ -2235,6 +2235,11 @@ if not shared.vulnsm then
 	end
 	shared.vulnsm = true 
 end 
+
+getgenv().appendfile = function(path, text) -- vxsty
+	getgenv().writefile(path, getgenv().readfile(path) .. text)
+end
+
 repeat task.wait()
         shared.notified = true
 until shared.notified
