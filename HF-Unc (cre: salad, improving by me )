@@ -1377,29 +1377,7 @@ getgenv().getscripts = function()
 	end
 	return scripts
 end  
-getgenv().newcclosure = function(a)
-    assert(typeof(a) == "function", "argument #1 is not a 'function'", 0)
-    local cclosure = function(...)
-        local co = coroutine.create(a)
-        local ok, result = coroutine.resume(co, ...)
-        if not ok then
-            error(result, 2)
-        end
-        return result
-    end
-    table.insert(Cclosures, cclosure)
-    return cclosure
-end
-getgenv().iscclosure = function(a)
-    assert(typeof(a) == "function", "argument #1 is not a 'function'", 0)
-	if a == newcclosure then return true end 
-    for b, c in next, Cclosures do
-        if c == a then
-            return true
-        end
-    end
-    return debug.info(a, "s") == "[C]"
-end
+
 getgenv().isexecutorclosure = function(a)
     assert(typeof(a) == "function", "argument #1 is not a 'function'", 0)
     local result = false
